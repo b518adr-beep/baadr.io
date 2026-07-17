@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صانع الصفحات الشخصية - لوحة التحكم</title>
+    <!-- Google Font: Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+
+    <!-- App Container -->
+    <div class="app-wrapper">
+        
+        <!-- SIDEBAR / NAVIGATION BAR (Hidden on Auth Screen) -->
+        <aside class="sidebar" id="mainSidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>صانع الصفحات</span>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-screen="dashboard" onclick="switchScreen('dashboard')">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="#" class="menu-item" data-screen="create" onclick="switchScreen('create')">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إنشاء صفحة جديدة</span>
+                </a>
+                <a href="#" class="menu-item" data-screen="profile" onclick="switchScreen('profile')">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="theme-toggle" onclick="toggleDarkMode()">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span id="themeText">الوضع الليلي</span>
+                </div>
+                <div class="lang-toggle" onclick="toggleLanguage()">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="langText">English</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+            
+            <!-- TOP BAR (Hidden on Auth Screen) -->
+            <header class="top-bar" id="mainTopBar">
+                <div class="top-bar-right">
+                    <button class="mobile-toggle" onclick="toggleSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h2 class="top-bar-title" id="pageTitle">لوحة التحكم</h2>
+                </div>
+                <div class="top-bar-left">
+                    <div class="user-badge" onclick="switchScreen('profile')">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar">
+                        <span class="user-badge-name">سارة الأحمد</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SCREENS CONTAINER -->
+            <div class="screens-container">
+
+                <!-- 1️⃣ SCREEN: AUTHENTICATION (Login / Signup) -->
+                <section id="screen-auth" class="screen active-screen">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <div class="auth-logo">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h2 id="authTitle">تسجيل الدخول</h2>
+                            <p id="authSubtitle">مرحباً بك مجدداً في صانع الصفحات الشخصية</p>
+                        </div>
+                        
+                        <!-- Toggle Tab for Auth -->
+                        <div class="auth-tabs">
+                            <button class="auth-tab active" id="tabLogin" onclick="setAuthTab('login')">تسجيل الدخول</button>
+                            <button class="auth-tab" id="tabRegister" onclick="setAuthTab('register')">إنشاء حساب</button>
+                        </div>
+
+                        <!-- Login/Signup Form -->
+                        <form id="authForm" onsubmit="handleAuth(event)">
+                            <div class="form-group" id="usernameGroup" style="display: none;">
+                                <label for="authName">الاسم الكامل</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-regular fa-user"></i>
+                                    <input type="text" id="authName" placeholder="أدخل اسمك الكامل">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="authEmail">البريد الإلكتروني</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <input type="email" id="authEmail" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="authPassword">كلمة المرور</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <input type="password" id="authPassword" placeholder="••••••••" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full" id="authSubmitBtn">تسجيل الدخول</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 2️⃣ SCREEN: DASHBOARD -->
+                <section id="screen-dashboard" class="screen">
+                    <div class="dashboard-header-actions">
+                        <p class="section-subtitle">أهلاً بك مجدداً! هنا يمكنك إدارة وتعديل كافة صفحاتك الشخصية المنشورة.</p>
+                        <button class="btn btn-primary" onclick="switchScreen('create')">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>إنشاء صفحة جديدة</span>
+                        </button>
+                    </div>
+
+                    <!-- Grid list of created bio pages -->
+                    <div class="bio-pages-grid" id="bioPagesGrid">
+                        <!-- Dynamic list generated by JS will appear here -->
+                    </div>
+                </section>
+
+                <!-- 3️⃣ & 4️⃣ SCREEN: CREATE / EDIT PROFILE -->
+                <section id="screen-create" class="screen">
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <h3 id="formScreenTitle">بيانات الصفحة الشخصية الجديدة</h3>
+                            <p>املأ الحقول التالية لتصميم صفحة الهوية الشخصية الخاصة بك ونشرها مباشرة.</p>
+                        </div>
+                        <form id="bioPageForm" onsubmit="handleSaveBioPage(event)">
+                            <input type="hidden" id="editPageIndex" value="">
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bioName">الاسم الكامل <span class="required">*</span></label>
+                                    <input type="text" id="bioName" placeholder="مثال: سارة الأحمد" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bioTitle">المسمى الوظيفي / التخصص <span class="required">*</span></label>
+                                    <input type="text" id="bioTitle" placeholder="مثال: مصمم واجهات ومطور ويب" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bioAvatar">رابط الصورة الشخصية</label>
+                                <div class="avatar-input-wrapper">
+                                    <input type="text" id="bioAvatar" placeholder="ضع رابط الصورة الشخصية أو اتركها للافتراضية">
+                                    <button type="button" class="btn btn-secondary" onclick="useDefaultAvatar()">صورة عشوائية</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bioBio">نبذة تعريفية قصيرة</label>
+                                <textarea id="bioBio" rows="3" placeholder="اكتب نبذة مختصرة عن شغفك، خبراتك، وأبرز مهاراتك..."></textarea>
+                            </div>
+
+                            <h4 class="form-section-title"><i class="fa-solid fa-address-book"></i> معلومات التواصل السريع</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bioEmail">البريد الإلكتروني للتواصل</label>
+                                    <input type="email" id="bioEmail" placeholder="sara@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bioPhone">رقم الهاتف للتواصل</label>
+                                    <input type="tel" id="bioPhone" placeholder="+966500000000">
+                                </div>
+                            </div>
+
+                            <h4 class="form-section-title"><i class="fa-solid fa-share-nodes"></i> روابط شبكات التواصل الاجتماعي</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-x-twitter"></i> منصة X</label>
+                                    <input type="url" id="bioX" placeholder="https://x.com/username">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-linkedin"></i> لينكد إن</label>
+                                    <input type="url" id="bioLinkedin" placeholder="https://linkedin.com/in/username">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fa-brands fa-github"></i> جيت هاب</label>
+                                    <input type="url" id="bioGithub" placeholder="https://github.com/username">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-globe"></i> الموقع الشخصي</label>
+                                    <input type="url" id="bioWebsite" placeholder="https://yourwebsite.com">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="switchScreen('dashboard')">إلغاء وتراجع</button>
+                                <button type="submit" class="btn btn-primary" id="saveBioBtn">حفظ ونشر الصفحة</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 5️⃣ SCREEN: LIVE PREVIEW (Fully styled with live theme switcher) -->
+                <section id="screen-preview" class="screen full-preview-screen">
+                    <!-- Control panel inside preview -->
+                    <div class="preview-controls">
+                        <div class="preview-controls-container">
+                            <button class="btn btn-secondary" onclick="switchScreen('dashboard')">
+                                <i class="fa-solid fa-arrow-right"></i> العودة للوحة التحكم
+                            </button>
+                            
+                            <div class="theme-selector-box">
+                                <label for="themeSelect"><i class="fa-solid fa-palette"></i> اختر قالب الصفحة الشخصية:</label>
+                                <select id="themeSelect" onchange="applyPreviewTheme(this.value)">
+                                    <option value="theme-professional">🔵 أزرق احترافي (الافتراضي)</option>
+                                    <option value="theme-dark-tech">🟢 تقني مظلم (Cyberpunk)</option>
+                                    <option value="theme-warm-sunset">🟠 غروب دافئ (ألوان ترابية)</option>
+                                    <option value="theme-minimal-mono">⚪ كلاسيكي هادئ (أبيض وأسود)</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="copyShareUrl()">
+                                <i class="fa-solid fa-share-nodes"></i> مشاركة الصفحة
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- The Shared Card Design -->
+                    <div class="preview-container">
+                        <div id="liveProfileCard" class="profile-card theme-professional">
+                            <div class="profile-header">
+                                <div class="avatar-container">
+                                    <img id="prevAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="profile-avatar">
+                                </div>
+                                <h1 class="profile-name" id="prevName">سارة الأحمد</h1>
+                                <p class="profile-title" id="prevTitle">مطور واجهات ومصمم تجربة مستخدم</p>
+                                <p class="profile-bio" id="prevBio">شغوفة بتحويل الأفكار المعقدة إلى واجهات رقمية بسيطة وممتعة للمستخدم.</p>
+                            </div>
+
+                            <!-- Fast Contact Triggers -->
+                            <div class="contact-actions">
+                                <a id="prevEmailBtn" href="mailto:sara@example.com" class="btn-contact">
+                                    <i class="fa-regular fa-envelope"></i> راسلني
+                                </a>
+                                <a id="prevPhoneBtn" href="tel:+966500000000" class="btn-contact">
+                                    <i class="fa-solid fa-phone"></i> اتصل بي
+                                </a>
+                            </div>
+
+                            <!-- Dynamic Social Links -->
+                            <div class="social-links" id="prevSocialLinks">
+                                <a id="linkX" href="#" class="social-item" target="_blank">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                    <span>منصة X</span>
+                                    <i class="fa-solid fa-chevron-left arrow"></i>
+                                </a>
+                                <a id="linkLinkedin" href="#" class="social-item" target="_blank">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                    <span>لينكد إن</span>
+                                    <i class="fa-solid fa-chevron-left arrow"></i>
+                                </a>
+                                <a id="linkGithub" href="#" class="social-item" target="_blank">
+                                    <i class="fa-brands fa-github"></i>
+                                    <span>جيت هاب</span>
+                                    <i class="fa-solid fa-chevron-left arrow"></i>
+                                </a>
+                                <a id="linkWebsite" href="#" class="social-item" target="_blank">
+                                    <i class="fa-solid fa-globe"></i>
+                                    <span>الموقع الشخصي</span>
+                                    <i class="fa-solid fa-chevron-left arrow"></i>
+                                </a>
+                            </div>
+
+                            <footer class="profile-footer">
+                                <a href="#" class="powered-by">صُنع بواسطة صانع الصفحات الشخصية ⚡</a>
+                            </footer>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6️⃣ SCREEN: USER PROFILE -->
+                <section id="screen-profile" class="screen">
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <h3>الملف الشخصي للحساب</h3>
+                            <p>إدارة معلومات حسابك الأساسية لتسجيل الدخول والبريد الإلكتروني العام.</p>
+                        </div>
+                        <div class="profile-settings-wrapper">
+                            <div class="profile-user-info-section">
+                                <div class="profile-user-avatar">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar">
+                                </div>
+                                <div class="profile-user-details">
+                                    <h4 class="user-fullname">سارة الأحمد</h4>
+                                    <p class="user-email">sara@example.com</p>
+                                    <span class="user-badge-role">حساب مطور (بريميوم)</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-meta-info">
+                                <div class="meta-item">
+                                    <span class="meta-label">عدد الصفحات الشخصية:</span>
+                                    <span class="meta-value" id="profilePagesCount">2</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">تاريخ الانضمام:</span>
+                                    <span class="meta-value">يوليو 2026</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-actions">
+                                <button class="btn btn-secondary" onclick="switchScreen('dashboard')">الرجوع للرئيسية</button>
+                                <button class="btn btn-danger" onclick="logout()">
+                                    <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Live Alerts / Toast Notifications -->
+    <div id="toast" class="toast">🎉 تم نسخ الرابط بنجاح!</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

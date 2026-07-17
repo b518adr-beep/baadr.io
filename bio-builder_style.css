@@ -1,0 +1,967 @@
+/* ==========================================================================
+   1. GLOBAL VARIABLES & DEFAULT VALUES (LIGHT MODE DEFAULT)
+   ========================================================================== */
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-app: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    --danger: #ef4444;
+    --success: #10b981;
+    --font-family: 'Tajawal', sans-serif;
+    --sidebar-width: 260px;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+    --bg-app: #0f172a;
+    --bg-card: #1e293b;
+    --bg-sidebar: #1e293b;
+    --border: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4);
+}
+
+/* English Version Layout Alteration */
+html[lang="en"] {
+    dir: ltr;
+}
+
+/* ==========================================================================
+   2. BASIC STYLING & BASE RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* App structure layout */
+.app-wrapper {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ==========================================================================
+   3. SIDEBAR STYLING
+   ========================================================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-sidebar);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    position: fixed;
+    height: 100vh;
+    z-index: 99;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/* Align sidebar to left in LTR / English */
+html[lang="en"] .sidebar {
+    left: 0;
+    right: auto;
+    border-right: 1px solid var(--border);
+    border-left: none;
+}
+
+.sidebar-header {
+    margin-bottom: 35px;
+    padding: 0 8px;
+}
+
+.sidebar-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.theme-toggle, .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.theme-toggle:hover, .lang-toggle:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+body.dark-mode .theme-toggle:hover, body.dark-mode .lang-toggle:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* ==========================================================================
+   4. MAIN CONTENT AREA & HEADER
+   ========================================================================== */
+.main-content {
+    flex-grow: 1;
+    margin-right: var(--sidebar-width);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Align margin for English version */
+html[lang="en"] .main-content {
+    margin-left: var(--sidebar-width);
+    margin-right: 0;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 30px;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.top-bar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: var(--bg-card);
+    padding: 6px 14px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.user-badge img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-badge-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   5. SCREEN HANDLING SETUP
+   ========================================================================== */
+.screen {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+.screen.active-screen {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   6. AUTHENTICATION SHIELD (SCREEN 1)
+   ========================================================================== */
+#screen-auth {
+    display: none; /* Controlled dynamically */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-app);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+#screen-auth.active-screen {
+    display: flex;
+}
+
+.auth-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.auth-logo {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.auth-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+}
+
+.auth-tabs {
+    display: flex;
+    background-color: var(--bg-app);
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.auth-tab {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.auth-tab.active {
+    background-color: var(--bg-card);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   7. FORM AND CONTROLS
+   ========================================================================== */
+.form-group {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+html[lang="en"] .form-group {
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.form-group .required {
+    color: var(--danger);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i {
+    position: absolute;
+    right: 14px;
+    color: var(--text-muted);
+}
+
+html[lang="en"] .input-wrapper i {
+    left: 14px;
+    right: auto;
+}
+
+.input-wrapper input {
+    padding-right: 40px;
+}
+
+html[lang="en"] .input-wrapper input {
+    padding-left: 40px;
+    padding-right: 12px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.avatar-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.avatar-input-wrapper input {
+    flex-grow: 1;
+}
+
+/* ==========================================================================
+   8. BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--border);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(0,0,0,0.08);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    filter: brightness(0.9);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* ==========================================================================
+   9. DASHBOARD LIST (SCREEN 2)
+   ========================================================================== */
+.dashboard-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.bio-pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.bio-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.bio-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.bio-card-top img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+}
+
+.bio-card-info h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.bio-card-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.bio-card-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+.bio-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.bio-card-actions .btn {
+    flex: 1;
+    font-size: 0.85rem;
+    padding: 8px;
+}
+
+/* ==========================================================================
+   10. CREATE / EDIT BIO-PAGE CARD (SCREEN 3 & 4)
+   ========================================================================== */
+.form-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-card-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.form-card-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.form-card-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin: 15px 0 20px 0;
+    color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+/* ==========================================================================
+   11. LIVE PREVIEW (SCREEN 5)
+   ========================================================================== */
+.full-preview-screen {
+    display: none;
+}
+
+.full-preview-screen.active-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview-controls {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 30px;
+}
+
+.preview-controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.theme-selector-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-selector-box select {
+    width: auto;
+    padding: 8px 12px;
+}
+
+.preview-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   12. MULTI-THEME VARIABLE SCHEMES FOR PREVIEW CARDS
+   ========================================================================== */
+
+/* 🔵 Theme 1: Professional Blue */
+.profile-card.theme-professional {
+    --p-bg: #f8fafc;
+    --p-card: #ffffff;
+    --p-text: #1e293b;
+    --p-muted: #64748b;
+    --p-accent: #2563eb;
+    --p-accent-hover: #1d4ed8;
+    --p-accent-light: #eff6ff;
+    --p-btn-text: #ffffff;
+    --p-link: #f8fafc;
+    --p-border: #e2e8f0;
+}
+
+/* 🟢 Theme 2: Cyberpunk Dark Tech */
+.profile-card.theme-dark-tech {
+    --p-bg: #090d16;
+    --p-card: #111827;
+    --p-text: #f3f4f6;
+    --p-muted: #9ca3af;
+    --p-accent: #10b981;
+    --p-accent-hover: #059669;
+    --p-accent-light: rgba(16, 185, 129, 0.1);
+    --p-btn-text: #090d16;
+    --p-link: #1f2937;
+    --p-border: #374151;
+}
+
+/* 🟠 Theme 3: Warm Sunset */
+.profile-card.theme-warm-sunset {
+    --p-bg: #fdf6f0;
+    --p-card: #ffffff;
+    --p-text: #432818;
+    --p-muted: #9e7676;
+    --p-accent: #d97706;
+    --p-accent-hover: #b45309;
+    --p-accent-light: #fef3c7;
+    --p-btn-text: #ffffff;
+    --p-link: #fdf8f5;
+    --p-border: #fed7aa;
+}
+
+/* ⚪ Theme 4: Minimal Monochromatic */
+.profile-card.theme-minimal-mono {
+    --p-bg: #ffffff;
+    --p-card: #ffffff;
+    --p-text: #000000;
+    --p-muted: #737373;
+    --p-accent: #171717;
+    --p-accent-hover: #404040;
+    --p-accent-light: #f5f5f5;
+    --p-btn-text: #ffffff;
+    --p-link: #fafafa;
+    --p-border: #e5e5e5;
+}
+
+/* ==========================================================================
+   13. THE SHARED BIO CARD STYLING (THEMED ATOMS)
+   ========================================================================== */
+.profile-card {
+    background-color: var(--p-card);
+    border: 1px solid var(--p-border);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px;
+    padding: 35px 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--p-accent);
+    margin-bottom: 18px;
+}
+
+.profile-name {
+    color: var(--p-text);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.profile-title {
+    color: var(--p-accent);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.profile-bio {
+    color: var(--p-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Quick action contact buttons */
+.contact-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.btn-contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.contact-actions .btn-contact:first-child {
+    background-color: var(--p-accent);
+    color: var(--p-btn-text);
+}
+
+.contact-actions .btn-contact:first-child:hover {
+    background-color: var(--p-accent-hover);
+}
+
+.contact-actions .btn-contact:last-child {
+    background-color: transparent;
+    color: var(--p-accent);
+    border: 2px solid var(--p-accent);
+}
+
+.contact-actions .btn-contact:last-child:hover {
+    background-color: var(--p-accent-light);
+}
+
+/* Links structure */
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.social-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    background-color: var(--p-link);
+    border: 1px solid var(--p-border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--p-text);
+    font-weight: 500;
+}
+
+.social-item i:first-child {
+    font-size: 1.2rem;
+    margin-left: 15px;
+    color: var(--p-accent);
+}
+
+html[lang="en"] .social-item i:first-child {
+    margin-right: 15px;
+    margin-left: 0;
+}
+
+.social-item span {
+    flex-grow: 1;
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+html[lang="en"] .social-item span {
+    text-align: left;
+}
+
+.social-item .arrow {
+    font-size: 0.75rem;
+    color: var(--p-muted);
+}
+
+.social-item:hover {
+    border-color: var(--p-accent);
+    background-color: var(--p-accent-light);
+    transform: translateY(-1px);
+}
+
+.profile-footer {
+    margin-top: 15px;
+}
+
+.powered-by {
+    color: var(--p-muted);
+    font-size: 0.75rem;
+    text-decoration: none;
+}
+
+.powered-by:hover {
+    color: var(--p-accent);
+}
+
+/* ==========================================================================
+   14. PROFILE SCREEN (SCREEN 6)
+   ========================================================================== */
+.profile-settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.profile-user-info-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-user-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+}
+
+.profile-user-details h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.profile-user-details p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.user-badge-role {
+    display: inline-block;
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+.profile-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--bg-app);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.meta-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.meta-value {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   15. TOASTS & UTILITIES
+   ========================================================================== */
+.toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1e293b;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    z-index: 10000;
+    transition: all 0.4s ease;
+}
+
+.toast.show {
+    bottom: 30px;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   16. MEDIA QUERIES & RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    html[lang="en"] .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .contact-actions {
+        grid-template-columns: 1fr;
+    }
+}
